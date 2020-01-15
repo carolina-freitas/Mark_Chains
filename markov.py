@@ -1,6 +1,7 @@
 """Generate Markov text from text files."""
 
 from random import choice
+import sys
 
 
 def open_and_read_file(file_path):
@@ -81,11 +82,12 @@ def make_text(chains):
         keys = list(keys)
 
         if len(words) < 1:
-            words.append(keys[0][0])
-            words.append(keys[0][1])
+            words.extend(keys[0])
+
         elif (words[-2], words[-1]) in chains:
             rand_string = choice(chains[(words[-2], words[-1])])
             words.append(rand_string)
+            
         else:
             break
         
@@ -94,7 +96,7 @@ def make_text(chains):
     return " ".join(words)
 
 
-input_path = "green-eggs.txt"
+input_path = sys.argv[1]
 
 # Open the file and turn it into one long string
 input_text = open_and_read_file(input_path)
@@ -106,3 +108,9 @@ chains = make_chains(input_text)
 random_text = make_text(chains)
 
 print(random_text)
+
+print(sys.argv)
+
+# program_name = sys.argv[0]
+# arguments = sys.argv[1:]
+# count = len(arguments)
