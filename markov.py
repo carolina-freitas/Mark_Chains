@@ -11,9 +11,20 @@ def open_and_read_file(file_path):
     """
 
     # your code goes here
+    file_data = open(file_path).read()
+    # file_data.rstrip()
+    # file_data.read()
 
-    return "Contents of your file as one long string"
 
+    # green_eggs = ""
+
+    # for line in file_data:
+    #     green_eggs += line
+
+
+    return file_data
+
+# file_data = open_and_read_file("green-eggs.txt")
 
 def make_chains(text_string):
     """Take input text as string; return dictionary of Markov chains.
@@ -40,12 +51,24 @@ def make_chains(text_string):
         [None]
     """
 
+    green_eggs_words = text_string.split()
+
     chains = {}
 
-    # your code goes here
+    for idx in range(len(green_eggs_words) - 2):
+        chain_key = (green_eggs_words[idx], green_eggs_words[idx+1])
 
+        if chain_key in chains:
+            chains[chain_key].append(green_eggs_words[idx+2])
+
+        else:
+            chains[chain_key] = [green_eggs_words[idx+2]]
+
+    print(chains)
+    # your code goes here
     return chains
 
+# make_chains(file_data)
 
 def make_text(chains):
     """Return text from chains."""
@@ -53,6 +76,20 @@ def make_text(chains):
     words = []
 
     # your code goes here
+    while True:
+        keys = chains.keys()
+        keys = list(keys)
+
+        if len(words) < 1:
+            words.append(keys[0][0])
+            words.append(keys[0][1])
+        elif (words[-2], words[-1]) in chains:
+            rand_string = choice(chains[(words[-2], words[-1])])
+            words.append(rand_string)
+        else:
+            break
+        
+    # print(words)
 
     return " ".join(words)
 
